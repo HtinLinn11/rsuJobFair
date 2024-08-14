@@ -7,7 +7,7 @@ exports.createJobOffer = async (req, res) => {
         await jobOffer.save();
         res.status(201).send(jobOffer);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send({ error: error.message });
     }
 };
 
@@ -17,7 +17,7 @@ exports.getAllJobOffers = async (req, res) => {
         const jobOffers = await JobOffer.find();
         res.status(200).send(jobOffers);
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({ error: error.message });
     }
 };
 
@@ -30,7 +30,7 @@ exports.getJobOfferById = async (req, res) => {
         }
         res.status(200).send(jobOffer);
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({ error: error.message });
     }
 };
 
@@ -47,7 +47,7 @@ exports.updateJobOfferById = async (req, res) => {
         }
         res.status(200).send(jobOffer);
     } catch (error) {
-        res.status(400).send(error);
+        res.status(400).send({ error: error.message });
     }
 };
 
@@ -58,12 +58,13 @@ exports.deleteJobOfferById = async (req, res) => {
         if (!jobOffer) {
             return res.status(404).send({ message: 'Job offer not found' });
         }
-        res.status(200).send(jobOffer);
+        res.status(200).send({ message: 'Job offer deleted successfully' });
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({ error: error.message });
     }
 };
 
+// Update the approval status of a job offer
 exports.updateJobOfferApprovalStatus = async (req, res) => {
     const jobOfferId = req.params.id;
     const { approvalStatus } = req.body;
@@ -74,7 +75,7 @@ exports.updateJobOfferApprovalStatus = async (req, res) => {
 
     try {
         const jobOffer = await JobOffer.findOneAndUpdate(
-            jobOfferId,
+            { jobOfferId },
             { approvalStatus },
             { new: true, runValidators: true }
         );

@@ -5,6 +5,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 const userRoute = require('./routes/userRoute');
 const jobOfferRoute = require('./routes/jobOfferRoute');
+const jobOfferUnapprovedRoute = require('./routes/jobOfferUnapprovedRoute');
 const applicationRoute = require('./routes/applicationRoute');
 const interviewRoute = require('./routes/interviewRoute');
 
@@ -50,6 +51,7 @@ connectMongoDB();
 // Use routes
 app.use('/api', userRoute);
 app.use('/api', jobOfferRoute);
+app.use('/api', jobOfferUnapprovedRoute);
 app.use('/api', applicationRoute);
 app.use('/api', interviewRoute);
 

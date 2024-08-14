@@ -411,6 +411,98 @@ async function deleteAllInterviews() {
     }
 }
 
+
+// Job Offer API Functions
+async function createJobOfferUnapproved(jobOfferData) {
+    try {
+        const response = await axios.post(`${BASE_URL}/joboffersUnapproved`, jobOfferData);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating job offer:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+
+async function getAllJobOffersUnapproved() {
+    try {
+        const response = await axios.get(`${BASE_URL}/joboffersUnapproved`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching job offers:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+async function deleteAllJobOffersUnapproved() {
+    try {
+        // Fetch all users
+        const jobs = await getAllJobOffersUnapproved();
+        
+        // Delete each user
+        const deletePromises = jobs.map(job => {
+            return deleteJobOfferById(job.jobOfferId);
+        });
+        
+        // Wait for all deletions to complete
+        const results = await Promise.all(deletePromises);
+        console.log('All job offers deleted:', results);
+    } catch (error) {
+        console.error('Error deleting all job offers:', error);
+    }
+}
+
+async function getJobOfferUnapprovedById(jobOfferId) {
+    try {
+        const response = await axios.get(`${BASE_URL}/joboffersUnapproved/${jobOfferId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching job offer:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+async function approveJobOfferUnapprovedById(jobOfferId, Faculty) {
+    try {
+        // Fetch the unapproved job offer by ID
+        const response = await axios.get(`${BASE_URL}/joboffersUnapproved/${jobOfferId}`);
+        
+        // Update the faculty field in the fetched job offer
+        response.data["faculty"] = Faculty;
+        
+        // Create a new job offer with the updated data
+        const response2 = await createJobOffer(response.data);
+        
+        // Return the newly created job offer data
+        return response2.data;
+    } catch (error) {
+        console.error('Error fetching job offer:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+async function updateJobOfferUnapprovedById(jobOfferId, jobOfferData) {
+    try {
+        const response = await axios.patch(`${BASE_URL}/joboffersUnapproved/${jobOfferId}`, jobOfferData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating job offer:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+async function deleteJobOfferUnapprovedById(jobOfferId) {
+    try {
+        const response = await axios.delete(`${BASE_URL}/joboffersUnapproved/${jobOfferId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting job offer:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+
+
 // Exporting the functions
 module.exports = {
     // User API
@@ -451,5 +543,15 @@ module.exports = {
     updateInterviewById,
     deleteInterviewById,
     deleteAllInterviews,
-    getInterviewsByFaculty
+    getInterviewsByFaculty,
+
+    createJobOfferUnapproved,
+    getAllJobOffersUnapproved,
+    deleteAllJobOffersUnapproved,
+    getJobOfferUnapprovedById,
+    approveJobOfferUnapprovedById,
+    updateJobOfferUnapprovedById,
+    deleteJobOfferUnapprovedById,
+    deleteJobOfferUnapprovedById
+
 };
