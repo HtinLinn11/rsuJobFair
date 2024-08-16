@@ -3,7 +3,8 @@ const {
     createUser, deleteAllUsers,
     createJobOffer, deleteAllJobOffers, bulkUpdateJobOfferStatus,
     createApplication, deleteAllApplications, bulkUpdateApplicationStatus,
-    createInterview , deleteAllInterviews
+    createInterview , deleteAllInterviews,
+    createJobOfferUnapproved, deleteAllJobOffersUnapproved, approveJobOfferUnapprovedById
 } = require('./helperFunctions'); // Adjust the path if necessary
 
 
@@ -13,7 +14,7 @@ async function createMultipleUsers(numberOfUsers) {
             username: `uniqueUser${i}`,
             password: 'password',
             email: `user${i}@example.com`,
-            faculty: 'Engineering',
+            faculty: 'RSU_INTERNATIONAL_COLLEGE',
             userType: 'student'
         };
 
@@ -32,16 +33,16 @@ async function createMultipleJobOffers(numberOfOffers) {
         const newJobOffer = {
             jobTitle: `Job Title ${i}`,
             jobDescription: `Description for job offer ${i}`,
-            faculty: 'Engineering',
+            faculty: 'RSU_INTERNATIONAL_COLLEGE',
             jobType: 'full-time',
-            jobLocation: 'Location ${i}',
+            jobLocation: `Location ${i}`,
             companyId: 1,
             approvalStatus: 'pending',
             additionalInfos: `Additional info ${i}`
         };
 
         try {
-            const data = await createJobOffer(newJobOffer);
+            const data = await createJobOfferUnapproved(newJobOffer);
             console.log('Job offer created:', data);
         } catch (err) {
             console.error('Failed to create job offer:', err);
@@ -49,14 +50,13 @@ async function createMultipleJobOffers(numberOfOffers) {
     }
 }
 
-
 async function createMultipleApplications(numberOfApplications) {
     for (let i = 1; i <= numberOfApplications; i++) {
         const newApplication = {
             jobOfferId: i, // Assuming jobOfferId is a number. Adjust if it's different.
             studentId: i, // Assuming studentId is a number. Adjust if it's different.
             resumeURL: `http://example.com/resume${i}.pdf`,
-            faculty: 'Engineering',
+            faculty: 'RSU_INTERNATIONAL_COLLEGE',
             approvalStatus: 'pending'
         };
 
@@ -77,7 +77,7 @@ async function createMultipleInterviews(numberOfInterviews) {
             studentId: i, // Assuming studentId is a number. Adjust if it's different.
             interviewTime: new Date(), // Example date and time, adjust as needed.
             interviewLocation: `Location ${i}`, // Example location, adjust as needed.
-            faculty: 'Engineering', // Example faculty, adjust as needed.
+            faculty: 'RSU_INTERNATIONAL_COLLEGE', // Example faculty, adjust as needed.
             status: 'scheduled' // Example status, adjust as needed.
         };
 

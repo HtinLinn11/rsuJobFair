@@ -468,13 +468,23 @@ async function approveJobOfferUnapprovedById(jobOfferId, Faculty) {
         const response = await axios.get(`${BASE_URL}/joboffersUnapproved/${jobOfferId}`);
         
         // Update the faculty field in the fetched job offer
-        response.data["faculty"] = Faculty;
+        const newJobOffer = {
+            jobTitle: response.data["jobTitle"],
+            jobDescription: response.data["jobDescription"],
+            faculty: Faculty,
+            jobType: response.data["jobType"],
+            jobLocation: response.data["jobLocation"],
+            companyId: response.data["companyId"],
+            approvalStatus: 'approved',
+            additionalInfos: response.data["additionalInfos"]
+        };
         
         // Create a new job offer with the updated data
-        const response2 = await createJobOffer(response.data);
+        const response2 = await createJobOffer(newJobOffer);
         
         // Return the newly created job offer data
         return response2.data;
+    
     } catch (error) {
         console.error('Error fetching job offer:', error.response ? error.response.data : error.message);
         throw error;
