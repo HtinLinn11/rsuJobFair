@@ -341,54 +341,71 @@ async function deleteInterviewById(interviewId) {
     }
 }
 
-// Get Users by Faculty
-async function getUsersByFaculty(faculty) {
+async function getUsersByFaculty(facultyy) {
     try {
-        const response = await axios.get('/users', {
-            params: { faculty }
+        const response = await axios.get(`${BASE_URL}/users`, {
+            params: { facultyy }
         });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching users by faculty:', error);
-        throw error;
-    }
-}
-
-// Get Job Offers by Faculty
-async function getJobOffersByFaculty(faculty) {
-    try {
-        const response = await axios.get('/joboffers', {
-            params: { faculty }
-        });
-        return response.data;
+        
+        // Filter the results in case the backend is not filtering correctly
+        const filteredData = response.data.filter(offer => offer.faculty === facultyy);
+        
+        return filteredData;
     } catch (error) {
         console.error('Error fetching job offers by faculty:', error);
         throw error;
     }
 }
 
-// Get Applications by Faculty
-async function getApplicationsByFaculty(faculty) {
+// Get Users by Faculty
+
+async function getJobOffersByFaculty(facultyy) {
     try {
-        const response = await axios.get('/applications', {
-            params: { faculty }
+        const response = await axios.get(`${BASE_URL}/joboffers`, {
+            params: { facultyy }
         });
-        return response.data;
+        
+        // Filter the results in case the backend is not filtering correctly
+        const filteredData = response.data.filter(offer => offer.faculty === facultyy);
+        
+        return filteredData;
     } catch (error) {
-        console.error('Error fetching applications by faculty:', error);
+        console.error('Error fetching job offers by faculty:', error);
+        throw error;
+    }
+}
+
+// Get Users by Faculty
+
+async function getApplicationsByFaculty(facultyy) {
+    try {
+        const response = await axios.get(`${BASE_URL}/applications`, {
+            params: { facultyy }
+        });
+        
+        // Filter the results in case the backend is not filtering correctly
+        const filteredData = response.data.filter(offer => offer.faculty === facultyy);
+        
+        return filteredData;
+    } catch (error) {
+        console.error('Error fetching job offers by faculty:', error);
         throw error;
     }
 }
 
 // Get Interviews by Faculty
-async function getInterviewsByFaculty(faculty) {
+async function getInterviewsByFaculty(facultyy) {
     try {
-        const response = await axios.get('/interviews', {
-            params: { faculty }
+        const response = await axios.get(`${BASE_URL}/interviews`, {
+            params: { facultyy }
         });
-        return response.data;
+        
+        // Filter the results in case the backend is not filtering correctly
+        const filteredData = response.data.filter(offer => offer.faculty === facultyy);
+        
+        return filteredData;
     } catch (error) {
-        console.error('Error fetching interviews by faculty:', error);
+        console.error('Error fetching job offers by faculty:', error);
         throw error;
     }
 }
@@ -511,8 +528,6 @@ async function deleteJobOfferUnapprovedById(jobOfferId) {
     }
 }
 
-
-
 // Exporting the functions
 module.exports = {
     // User API
@@ -555,6 +570,7 @@ module.exports = {
     deleteAllInterviews,
     getInterviewsByFaculty,
 
+    // JobOffer Unapproved API
     createJobOfferUnapproved,
     getAllJobOffersUnapproved,
     deleteAllJobOffersUnapproved,

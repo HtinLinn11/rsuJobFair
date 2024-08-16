@@ -4,21 +4,21 @@ const {
     createJobOffer, deleteAllJobOffers, bulkUpdateJobOfferStatus, getAllJobOffers,
     createApplication, deleteAllApplications, bulkUpdateApplicationStatus,
     createInterview , deleteAllInterviews,
-    createJobOfferUnapproved, deleteAllJobOffersUnapproved, approveJobOfferUnapprovedById, getAllJobOffersUnapproved
+    createJobOfferUnapproved, deleteAllJobOffersUnapproved, approveJobOfferUnapprovedById, getAllJobOffersUnapproved,
+    getJobOffersByFaculty
 } = require('./helperFunctions'); // Adjust the path if necessary
 
-
-approveJobOfferUnapprovedById(1, 'OFFICE_OF_ALUMNI_AND_COMMUNITY_RELATIONS')
 let jobOffers;
 
-const data= async()=>{
-    const result=await getAllJobOffers();
-    return result
-}
+const data = async () => {
+  const result = await getJobOffersByFaculty("OFFICE_OF_ALUMNI_AND_COMMUNITY_RELATIONS");
+  return result;
+};
 
-jobOffers=data();
-console.log('Job Offers:', jobOffers);
-
+data().then(result => {
+  jobOffers = result;
+  console.log('Job Offers:', jobOffers);
+});
 
 
 
