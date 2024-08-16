@@ -94,6 +94,7 @@ deleteAllUsers()
 deleteAllJobOffers()
 deleteAllApplications()
 deleteAllInterviews()
+deleteAllJobOffersUnapproved()
 
 // Example usage: create 5 users
 createMultipleUsers(5);

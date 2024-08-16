@@ -159,27 +159,19 @@ async function updateJobOfferApprovalStatus(jobOfferId, approvalStatus) {
     }
 }
 
-async function bulkUpdateJobOfferStatus(jobOfferIds, approvalStatus) {
+async function bulkApproveJobOfferStatus(jobOfferIds, faculty) {
     try {
-        // Validate approvalStatus
-        const validStatuses = ['approved', 'rejected'];
-        if (!validStatuses.includes(approvalStatus)) {
-            throw new Error(`Invalid approval status: ${approvalStatus}. Must be 'approved' or 'rejected'.`);
-        }
-
         // Map over jobOfferIds and call updateJobOfferApprovalStatus for each
         const updatePromises = jobOfferIds.map(jobOfferId => {
-            return updateJobOfferApprovalStatus(jobOfferId, approvalStatus);
+            return approveJobOfferUnapprovedById(jobOfferId, faculty);
         });
-
         // Await all update requests
         const results = await Promise.all(updatePromises);
-
         // Log and return results
-        console.log(`${approvalStatus.charAt(0).toUpperCase() + approvalStatus.slice(1)} job offers:`, results);
+        console.log(`${faculty} job offers:`, results);
         return results;
     } catch (error) {
-        console.error(`Error bulk ${approvalStatus === 'approved' ? 'approving' : 'disapproving'} job offers:`, error.response ? error.response.data : error.message);
+        console.error(`Error bulk ${faculty} job offers:`, error.response ? error.response.data : error.message);
         throw error;
     }
 }
@@ -458,7 +450,7 @@ async function deleteAllJobOffersUnapproved() {
         
         // Delete each user
         const deletePromises = jobs.map(job => {
-            return deleteJobOfferById(job.jobOfferId);
+            return deleteJobOfferUnapprovedById(job.jobOfferId);
         });
         
         // Wait for all deletions to complete
@@ -545,10 +537,9 @@ module.exports = {
     getJobOfferById,
     updateJobOfferById,
     deleteJobOfferById,
-    updateJobOfferApprovalStatus,
-    bulkUpdateJobOfferStatus,
     deleteAllJobOffers,
     getJobOffersByFaculty,
+    updateJobOfferApprovalStatus,
     
     // Application API
     createApplication,
@@ -556,10 +547,10 @@ module.exports = {
     getApplicationById,
     updateApplicationById,
     deleteApplicationById,
-    updateApplicationApprovalStatus,
-    bulkUpdateApplicationStatus,
     deleteAllApplications,
     getApplicationsByFaculty,
+    updateApplicationApprovalStatus,
+    bulkUpdateApplicationStatus,
 
     // Interview API
     createInterview,
@@ -578,6 +569,7 @@ module.exports = {
     approveJobOfferUnapprovedById,
     updateJobOfferUnapprovedById,
     deleteJobOfferUnapprovedById,
-    deleteJobOfferUnapprovedById
+    deleteJobOfferUnapprovedById,
+    bulkApproveJobOfferStatus,
 
 };

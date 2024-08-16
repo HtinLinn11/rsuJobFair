@@ -3,10 +3,11 @@ const {
     createUser, deleteAllUsers,
     createJobOffer, deleteAllJobOffers, bulkUpdateJobOfferStatus, getAllJobOffers,
     createApplication, deleteAllApplications, bulkUpdateApplicationStatus,
-    createInterview , deleteAllInterviews,
+    createInterview , deleteAllInterviews, deleteJobOfferById,
     createJobOfferUnapproved, deleteAllJobOffersUnapproved, approveJobOfferUnapprovedById, getAllJobOffersUnapproved,
-    getJobOffersByFaculty
+    getJobOffersByFaculty, bulkApproveJobOfferStatus
 } = require('./helperFunctions'); // Adjust the path if necessary
+
 
 let jobOffers;
 
