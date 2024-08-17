@@ -37,7 +37,6 @@ const JobOfferUnapprovedSchema = new mongoose.Schema({
     faculty: {
         type: String,
         required: false,
-        enum: facultyEnum,
     },
     jobType: {
         type: String,

@@ -8,10 +8,12 @@ const jobOfferRoute = require('./routes/jobOfferRoute');
 const jobOfferUnapprovedRoute = require('./routes/jobOfferUnapprovedRoute');
 const applicationRoute = require('./routes/applicationRoute');
 const interviewRoute = require('./routes/interviewRoute');
+var cors = require('cors')
 
 const app = express();
 
 // Middleware
+app.use(cors()) // Use this after the variable declaratio
 app.use(express.json());
 
 // Log the MongoDB URI
